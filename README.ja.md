@@ -2,6 +2,8 @@
 
 [English](README.md) | 日本語
 
+[KDE Store](https://store.kde.org/p/2374313/) · [GitHub](https://github.com/nagata1634/plasma-spanimage)
+
 1 枚の画像を**複数モニタにまたがって**表示する KDE Plasma 6 の壁紙プラグインです。
 
 Plasma には壁紙のスパン機能がありません（[KDE Bug 393781](https://bugs.kde.org/show_bug.cgi?id=393781)、

@@ -14,7 +14,8 @@
         "Name": "Span Image",
         "Name[ja]": "スパン画像",
         "Version": "1.1",
-        "Website": "https://github.com/nagata1634/plasma-spanimage"
+        "Website": "https://store.kde.org/p/2374313/",
+        "BugReportUrl": "https://github.com/nagata1634/plasma-spanimage/issues"
     },
     "X-KDE-ParentApp": "org.kde.plasmashell",
     "MimeType": "image/jpeg;image/png;image/webp;image/bmp;image/avif;"

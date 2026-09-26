@@ -2,6 +2,8 @@
 
 English | [日本語](README.ja.md)
 
+[KDE Store](https://store.kde.org/p/2374313/) · [GitHub](https://github.com/nagata1634/plasma-spanimage)
+
 A KDE Plasma 6 wallpaper plugin that shows **one image spanning all monitors**.
 
 Plasma has no built-in wallpaper spanning ([KDE Bug 393781](https://bugs.kde.org/show_bug.cgi?id=393781),
