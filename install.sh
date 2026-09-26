@@ -32,5 +32,9 @@ case "${1:-}" in
     echo "System Settings › ログイン画面 › 壁紙の種類 で「スパン画像 (Span Image)」を選び、/usr/local/share/wallpapers/ の画像を指定してください。"; exit 0 ;;
   *) echo "usage: $0 [--link|--uninstall|--system [image]]" >&2; exit 2 ;;
 esac
+# 導入/更新後は plasmashell を再起動しないと、読み込み済みの古い QML と新しいファイルが混在して
+# 一部の画面だけ壁紙が出ない(余白色のまま)ことがある。
+if systemctl --user is-active plasma-plasmashell.service >/dev/null 2>&1; then
+  systemctl --user restart plasma-plasmashell.service && ok "plasmashell を再起動しました"
+fi
 echo "デスクトップを右クリック › 壁紙を設定 › 壁紙の種類 で「スパン画像 (Span Image)」を選んでください。"
-echo "一覧に出ない場合: plasmashell --replace &"

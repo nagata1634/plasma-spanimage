@@ -32,7 +32,7 @@ cd plasma-spanimage
 ```
 
 デスクトップを右クリック › 壁紙を設定 › **壁紙の種類** で「スパン画像 (Span Image)」を選び、画像を選択します。
-一覧に出ない場合は `plasmashell --replace &` で再読み込みしてください。
+導入・**更新**後は plasmashell の再起動が必要です（`systemctl --user restart plasma-plasmashell`、`install.sh` は自動で行います）。再起動しないと、一部の画面に古いインスタンスが残って余白色だけになることがあります。
 
 ## 設定
 

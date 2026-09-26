@@ -34,7 +34,9 @@ cd plasma-spanimage
 ```
 
 Right-click the desktop › Configure Desktop and Wallpaper › **Wallpaper type** › "Span Image", then
-pick an image. If it doesn't show up, reload with `plasmashell --replace &`.
+pick an image. After installing or **upgrading** the plugin, restart plasmashell
+(`systemctl --user restart plasma-plasmashell`, done automatically by `install.sh`) — otherwise a screen
+may keep an old instance and show only the margin color.
 
 ## Settings
 
