@@ -37,6 +37,12 @@ cd plasma-spanimage
 - 画像（サムネイル一覧から選択、または「追加」でファイルを指定）
 - 余白の色（画像の縦横比が仮想デスクトップと違うときに見える部分。既定 `#002b36`）
 
+**どれか 1 つの画面で選んで [適用] すれば、他の画面にも同じ画像が配られます**（Plasma の壁紙設定は画面ごとに独立しているため、プラグインが plasmashell のスクリプティング API で他の画面へ同じ値を書きます）。
+
+### ログイン画面（Plasma Login Manager）
+
+`./install.sh --system /path/to/image.jpg` で `/usr/local/share` に導入し（pkexec）、System Settings › ログイン画面 › 壁紙の種類 で「スパン画像」を選びます。ログイン画面は `plasmalogin` ユーザーで動くので、画像も `/usr/local/share/wallpapers/` など全員が読める場所に置く必要があります。
+
 キー名は `org.kde.image` に合わせてあります（`Image` / `Color` / `FillMode` / `Blur`）。
 流用しているサムネイル UI が `cfg_*` を直に参照するためです。
 

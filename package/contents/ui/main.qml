@@ -20,6 +20,7 @@
 import QtQuick
 import org.kde.plasma.wallpapers.image as Wallpaper
 import org.kde.plasma.plasmoid
+import org.kde.plasma.plasma5support as P5Support
 
 WallpaperItem {
     id: root
@@ -70,6 +71,8 @@ WallpaperItem {
         // 設定ダイアログ表示中に plasmashell や systemsettings が落ちた場合の残骸を消す
         configuration.PreviewImage = "null";
         root.loading = true;
+        // 起動時の値は「既に全画面に配られたもの」とみなし、伝播しない
+        root.propagated = String(configuration.Image || "") + "|" + String(configuration.Color || "");
     }
 
     // システム設定の「すべての画面に適用」経由だと Image だけが書き換わり、
@@ -77,11 +80,48 @@ WallpaperItem {
     // 古い値のまま残り続け、rawSource がそちらを優先してしまう
     // (「選び直しても反映されない」の直接原因)。Image が変わった時点で
     // PreviewImage の役目は終わっているので、経路によらず即座に消す。
-    Connections {
-        target: configuration
-        function onImageChanged() {
-            if (configuration.PreviewImage !== "null")
-                configuration.PreviewImage = "null";
+    // configuration は QQmlPropertyMap なので、Connections の onImageChanged より
+    // バインディング経由の変化検知の方が確実に動く。
+    readonly property string currentImage: String(configuration.Image || "")
+    readonly property string currentColor: String(configuration.Color || "")
+    onCurrentImageChanged: {
+        if (configuration.PreviewImage !== "null")
+            configuration.PreviewImage = "null";
+        propagate.restart();
+    }
+    onCurrentColorChanged: propagate.restart()
+
+    // --- 1画面で選んだ画像を全画面へ配る ------------------------------------
+    // Plasma の壁紙設定は画面(containment)ごとに独立していて、1画面で選んでも他の画面は
+    // 別の画像のまま = 「切れた画像」に見える。ここでは Image/Color が変わったら plasmashell の
+    // スクリプティング API(evaluateScript)で他の spanimage containment に同じ値を書き、
+    // reloadConfig() で即反映させる。同じ値なら書かないので連鎖しない。
+    property string propagated: ""
+    P5Support.DataSource {
+        id: shell
+        engine: "executable"
+        onNewData: (source, data) => disconnectSource(source)
+    }
+    Timer {
+        id: propagate
+        interval: 300   // Apply 直後の連続変更(Image→PreviewImage など)をまとめる
+        onTriggered: {
+            const img = String(configuration.Image || ""), col = String(configuration.Color || "");
+            const sig = img + "|" + col;
+            if (!img || sig === root.propagated)
+                return;
+            root.propagated = sig;
+            const js = 'for (const d of desktops()) {'
+                + ' if (d.wallpaperPlugin != "dev.yuya.spanimage") continue;'
+                + ' d.currentConfigGroup = ["Wallpaper", "dev.yuya.spanimage", "General"];'
+                + ' if (d.readConfig("Image") == ' + JSON.stringify(img)
+                + ' && String(d.readConfig("Color")) == ' + JSON.stringify(col) + ') continue;'
+                + ' d.writeConfig("Image", ' + JSON.stringify(img) + ');'
+                + ' d.writeConfig("Color", ' + JSON.stringify(col) + ');'
+                + ' d.writeConfig("PreviewImage", "null");'
+                + ' d.reloadConfig(); }';
+            const quoted = "'" + js.replace(/'/g, "'\\''") + "'";
+            shell.connectSource("qdbus-qt6 org.kde.plasmashell /PlasmaShell evaluateScript " + quoted + " # " + Date.now());
         }
     }
 

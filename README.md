@@ -40,6 +40,12 @@ pick an image. If it doesn't show up, reload with `plasmashell --replace &`.
 - Margin color (visible when the image's aspect ratio differs from the virtual desktop;
   default `#002b36`)
 
+**Pick the image on any one screen and Apply; the other screens follow automatically** (Plasma keeps wallpaper settings per screen, so the plugin writes the same value to the other screens through plasmashell's scripting API).
+
+### Login screen (Plasma Login Manager)
+
+`./install.sh --system /path/to/image.jpg` installs the plugin into `/usr/local/share` (via pkexec); then choose "Span Image" under System Settings › Login Screen › Wallpaper type. The greeter runs as the `plasmalogin` user, so the image must live somewhere world-readable such as `/usr/local/share/wallpapers/`.
+
 Config keys mirror `org.kde.image` (`Image` / `Color` / `FillMode` / `Blur`) because the reused
 thumbnail UI references `cfg_*` directly.
 

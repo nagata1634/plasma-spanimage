@@ -101,7 +101,7 @@ ColumnLayout {
 
         QtControls2.Label {
             Kirigami.FormData.label: root.ja ? "表示:" : "Display:"
-            text: root.ja ? "画像は全画面を覆う1枚として配置され、各画面はその一部を表示します。\n両方の画面で同じ画像を選んでください。" : "The image is stretched over all screens as one picture; each screen shows its part.\nPick the same image on every screen."
+            text: root.ja ? "画像は全画面を覆う1枚として配置され、各画面はその一部を表示します。\nどれか1つの画面で選んで [適用] すれば、他の画面にも同じ画像が配られます。" : "The image is stretched over all screens as one picture; each screen shows its part.\nPick it on any one screen and Apply; the other screens follow automatically."
             wrapMode: Text.WordWrap
             opacity: 0.7
         }
