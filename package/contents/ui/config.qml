@@ -16,6 +16,9 @@ import org.kde.kirigami as Kirigami
 ColumnLayout {
     id: root
 
+    // 表示言語: ロケールが ja* なら日本語、それ以外は英語（KPackage の翻訳ドメイン無しで済ませる）
+    readonly property bool ja: Qt.locale().name.indexOf("ja") === 0
+
     // Plasma が初期プロパティとして注入する。宣言しないと設定ページ全体が壊れる。
     property var configDialog
     property var wallpaperConfiguration: wallpaper.configuration
@@ -89,7 +92,7 @@ ColumnLayout {
 
         KQuickControls.ColorButton {
             id: colorButton
-            Kirigami.FormData.label: "余白の色:"
+            Kirigami.FormData.label: root.ja ? "余白の色:" : "Margin color:"
             dialogTitle: "余白の色を選択"
             KCM.SettingHighlighter {
                 highlight: root.cfg_Color != root.cfg_ColorDefault
@@ -97,8 +100,8 @@ ColumnLayout {
         }
 
         QtControls2.Label {
-            Kirigami.FormData.label: "表示:"
-            text: "画像は全画面を覆う1枚として配置され、各画面はその一部を表示します。\n両方の画面で同じ画像を選んでください。"
+            Kirigami.FormData.label: root.ja ? "表示:" : "Display:"
+            text: root.ja ? "画像は全画面を覆う1枚として配置され、各画面はその一部を表示します。\n両方の画面で同じ画像を選んでください。" : "The image is stretched over all screens as one picture; each screen shows its part.\nPick the same image on every screen."
             wrapMode: Text.WordWrap
             opacity: 0.7
         }
